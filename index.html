@@ -3,15 +3,63 @@
 <head>
     <title>Catsi Game</title>
     <link rel="stylesheet" href="style.css">
+     <title>Красный таймер</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .timer {
+            font-size: 5rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <h1>Добро пожаловать в Catsi Game!</h1>
-    <p>Игра скоро будет доступна через "timer"</p>
+    <p>Игра скоро будет доступна через <p>
+        <div class="timer" id="timer">00:00:00</div>
+
+    <script>
+        // Начальное время (часы, минуты, секунды)
+        let hours = 0;
+        let minutes = 0;
+        let seconds = 0;
+        
+        // Функция обновления таймера
+        function updateTimer() {
+            seconds++;
+            
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+            }
+            
+            if (minutes >= 60) {
+                minutes = 0;
+                hours++;
+            }
+            
+            // Форматирование времени с ведущими нулями
+            const formattedTime = 
+                String(hours).padStart(2, '0') + ':' + 
+                String(minutes).padStart(2, '0') + ':' + 
+                String(seconds).padStart(2, '0');
+            
+            document.getElementById('timer').textContent = formattedTime;
+        }
+        
+        // Запуск таймера (обновление каждую секунду)
+        setInterval(updateTimer, 1000);
+    </script>
 </body>
-    <div id="timer">  
-    <span id="days">1</span> дней  
-    <span id="hours">4</span> часов  
-    <span id="minutes">51</span> минут  
-    <span id="seconds">21</span> секунд  
-</div>  
 </html>
