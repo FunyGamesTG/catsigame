@@ -4,7 +4,7 @@
     <title>Catsi Game</title>
     <link rel="stylesheet" href="style.css">
      <title>Красный таймер</title>
-    <style>
+  <style>
         body {
             display: flex;
             justify-content: center;
@@ -15,47 +15,78 @@
             font-family: Arial, sans-serif;
         }
         .timer {
-            font-size: 5rem;
+            font-size: 3rem;
             color: #ff0000;
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
             padding: 20px;
             border-radius: 10px;
             background-color: rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .timer span {
+            display: inline-block;
+            min-width: 60px;
+        }
+        .label {
+            font-size: 1rem;
+            color: #990000;
+            display: block;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
     <h1>Добро пожаловать в Catsi Game!</h1>
     <p>Игра скоро будет доступна через <p>
-        <div class="timer" id="timer">00:00:00</div>
-
-    <div class="timer" id="timer">05:00</div>
+  <div class="timer">
+        <div>
+            <span id="days">00</span> :
+            <span id="hours">00</span> :
+            <span id="minutes">00</span> :
+            <span id="seconds">00</span>
+        </div>
+        <div>
+            <span class="label">дней</span>
+            <span class="label">часов</span>
+            <span class="label">минут</span>
+            <span class="label">секунд</span>
+        </div>
+    </div>
 
     <script>
-        // Установите время обратного отсчёта (в минутах)
-        const startMinutes = 5;
-        let time = startMinutes * 60; // Конвертируем в секунды
+        // Дата окончания - 20 июня 13:00
+        const endDate = new Date('June 20, 2024 13:00:00').getTime();
         
         function updateCountdown() {
-            const minutes = Math.floor(time / 60);
-            let seconds = time % 60;
+            const now = new Date().getTime();
+            const distance = endDate - now;
             
-            // Добавляем ноль перед секундами, если они меньше 10
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            
-            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
-            
-            // Остановка при достижении 0
-            if (time <= 0) {
+            // Если время вышло
+            if (distance < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
                 clearInterval(countdown);
-                document.getElementById('timer').textContent = "Время вышло!";
-            } else {
-                time--;
+                return;
             }
+            
+            // Расчёты
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            // Вывод
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
         }
         
-        // Запускаем обратный отсчёт (обновление каждую секунду)
+        // Запускаем обновление каждую секунду
         const countdown = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Сразу вызываем для устранения задержки
     </script>
 </body>
 </html>
