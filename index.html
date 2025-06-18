@@ -29,37 +29,33 @@
     <p>Игра скоро будет доступна через <p>
         <div class="timer" id="timer">00:00:00</div>
 
+    <div class="timer" id="timer">05:00</div>
+
     <script>
-        // Начальное время (часы, минуты, секунды)
-        let hours = 43;
-        let minutes = 30;
-        let seconds = 27;
+        // Установите время обратного отсчёта (в минутах)
+        const startMinutes = 5;
+        let time = startMinutes * 60; // Конвертируем в секунды
         
-        // Функция обновления таймера
-        function updateTimer() {
-            seconds++;
+        function updateCountdown() {
+            const minutes = Math.floor(time / 60);
+            let seconds = time % 60;
             
-            if (seconds >= 60) {
-                seconds = 0;
-                minutes++;
+            // Добавляем ноль перед секундами, если они меньше 10
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            document.getElementById('timer').textContent = `${minutes}:${seconds}`;
+            
+            // Остановка при достижении 0
+            if (time <= 0) {
+                clearInterval(countdown);
+                document.getElementById('timer').textContent = "Время вышло!";
+            } else {
+                time--;
             }
-            
-            if (minutes >= 60) {
-                minutes = 0;
-                hours++;
-            }
-            
-            // Форматирование времени с ведущими нулями
-            const formattedTime = 
-                String(hours).padStart(2, '0') + ':' + 
-                String(minutes).padStart(2, '0') + ':' + 
-                String(seconds).padStart(2, '0');
-            
-            document.getElementById('timer').textContent = formattedTime;
         }
         
-        // Запуск таймера (обновление каждую секунду)
-        setInterval(updateTimer, 1000);
+        // Запускаем обратный отсчёт (обновление каждую секунду)
+        const countdown = setInterval(updateCountdown, 1000);
     </script>
 </body>
 </html>
